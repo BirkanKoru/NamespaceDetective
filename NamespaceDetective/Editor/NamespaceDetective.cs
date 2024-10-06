@@ -50,21 +50,31 @@ public class NamespaceDetective : EditorWindow
 
     private void OnGUI() 
     {
-        scrollViewVector = GUI.BeginScrollView(new Rect(25, 45, position.width - 30, position.height), scrollViewVector, new Rect(0, 0, 400, 500));
-
-        for(int i=0; i < namespaceInfoManager.Infos.Count; i++)
+		if(EditorUserBuildSettings.activeBuildTarget == BuildTarget.Android || EditorUserBuildSettings.activeBuildTarget == BuildTarget.iOS)
         {
-            GUILibraryInfoList(i);
+            scrollViewVector = GUI.BeginScrollView(new Rect(25, 45, position.width - 30, position.height), scrollViewVector, new Rect(0, 0, 400, 500));
+
+            for(int i=0; i < namespaceInfoManager.Infos.Count; i++)
+            {
+                GUILibraryInfoList(i);
+            }
+            GUILayout.Space(20);
+
+            GUIAddAndRemove();
+            GUILayout.Space(20);
+
+            GUIDetectNamespaces();
+            GUILayout.Space(20);
+
+            GUI.EndScrollView();
+
+        } else {
+
+            GUILayout.Space(20);
+            GUILayout.BeginHorizontal();
+            GUILayout.TextArea("Current platform is " + EditorUserBuildSettings.activeBuildTarget + ". Please switch the platform Android or IOS!");
+            GUILayout.EndHorizontal();  
         }
-        GUILayout.Space(20);
-
-        GUIAddAndRemove();
-        GUILayout.Space(20);
-
-        GUIDetectNamespaces();
-        GUILayout.Space(20);
-
-        GUI.EndScrollView();
     }
 
     private void GUILibraryInfoList(int index)
